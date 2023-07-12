@@ -8,20 +8,22 @@ resource "aws_internet_gateway" "learning-test-internet-gateway" {
 }
 
 resource "aws_eip" "learning-test-eip" {
-  vpc = true
+  count = length(aws_subnet.learning-test-private-subnet)
+  domain = "vpc"
 
   tags = {
-    Name = "learning-test-elastic_ip"
+    Name = "learning-test-elastic-ip-${count.index}"
     ManagedBy = "terraform"
   }
 }
 
 resource "aws_nat_gateway" "learning-test-nat-gateway" {
-  allocation_id = aws_eip.learning-test-eip.id 
-  subnet_id = aws_subnet.learning-test-public-subnet.id
+  count = length(aws_subnet.learning-test-private-subnet)
+  allocation_id = aws_eip.learning-test-eip[count.index].id 
+  subnet_id = aws_subnet.learning-test-private-subnet[count.index].id  
 
   tags = {
-    Name = "learning-test-nat-gateway"
+    Name = "learning-test-nat-gateway-${count.index}"
     ManagedBy = "terraform"
   }
 }
