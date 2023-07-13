@@ -1,13 +1,13 @@
-resource "aws_security_group" "learning-test-secgr-basic" {
+resource "aws_security_group" "secgr" {
   name = "allow_tls"
   description = "Allow TLS inbound traffic"
-  vpc_id = aws_vpc.learning-test-vpc.id
+  vpc_id = var.vpc_id
 
   ingress {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = var.private_subnet_cidr_blocks
+    cidr_blocks = var.private_subnets
   }
 
   egress {
@@ -19,7 +19,7 @@ resource "aws_security_group" "learning-test-secgr-basic" {
   }
 
   tags = {
-    Name = "allow_tls"
+    Name = "${var.inf_env}-secgr"
     ManagedBy = "terraform"
   }
 }

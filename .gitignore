@@ -1,6 +1,7 @@
 # Local .terraform directories
 **/.terraform/*
 .terraform/*
+.terraform.*
 
 # Backup files
 *.backup
@@ -27,3 +28,6 @@ override.tf.json
 # CLI configuration files
 .terraformrc
 terraform.rc
+
+# SSH Keys
+*.pem
