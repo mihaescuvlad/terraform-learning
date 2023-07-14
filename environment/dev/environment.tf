@@ -15,7 +15,23 @@ module "ec2" {
   subnet_id = module.vpc.vpc_private_subnet_ids[0] 
   vpc_default_security_group_id = module.vpc.vpc_default_security_group_id
 
-  user_data = file("../../modules/ec2/user-data/ec2-nginx-webserver.sh")
+  user_data = file(var.user_data_path)
+  iam_instance_profile = module.iam_instance_profile.inst_pr_name
+}
+
+module "iam_instance_profile" {
+  source = "../../modules/instance_profiles"
+
+  inf_env = var.inf_env
+
+  role_policy = file(var.role_policy_path)
+  policies = var.role_policies
+}
+
+module "iam_resources" {
+  source = "../../modules/instance_profiles/resources"
+
+  inf_env = var.inf_env
 }
 
 module "security-group-tls" {
@@ -35,3 +51,4 @@ module "bastion" {
   vpc_default_security_group_id = module.vpc.vpc_default_security_group_id
   other_security_groups = [module.security-group-tls.sec_gr_id]
 }
+

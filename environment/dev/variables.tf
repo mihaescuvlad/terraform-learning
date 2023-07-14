@@ -20,22 +20,32 @@ variable "vpc_cidr_block" {
   default = "10.0.0.0/24"
 }
 
-#variable "public_subnets" {
-#  description = "CIDR blocks for the public subnets"
-#  type = list(string)
-#  default = []
-#}
+# EC2 Management #####################################################
+variable "user_data_path" {
+  description = "File path of the user data file"
+  type = string
+  default = "../../modules/ec2/user-data/ec2-nginx-webserver.sh"
+}
 
-#variable "private_subnets" {
-#  description = "CIDR blocks for the private subnets"
-#  type = list(string)
-#  default = []
-#}
+# Instance Profile Management ########################################
 
+variable "role_policy_path" {
+  description = "File path of the role policy file"
+  type = string
+  default = "../../modules/instance_profiles/role-policy/role-policy.json"
+}
+
+variable "role_policies" {
+  description = "The list of policies that will be attached to the role"
+  type = list(string)
+  default = ["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess", "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"] 
+}
 
 # Local Variables ####################################################
+
 locals {
   cidr_subnets = cidrsubnets(var.vpc_cidr_block, 4, 4, 4)
   private_subnets = slice(local.cidr_subnets, 0, 1) 
   public_subnets = slice(local.cidr_subnets, 1, 2)
 }
+

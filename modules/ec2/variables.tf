@@ -15,6 +15,12 @@ variable "instance_type" {
   default = "t2.micro"
 }
 
+variable "iam_instance_profile" {
+  description = "Instance profile name to be used with the EC2"
+  type = string
+  default = ""
+}
+
 variable "ami_id" {
   description = "The AMI to use"
   type = string
