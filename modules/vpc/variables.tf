@@ -4,6 +4,12 @@ variable "inf_env" {
   default = "test"
 }
 
+variable "availability_zone" {
+  description = "List of availability zones for subnets"
+  type = list(string)
+  default = ["eu-central-1a", "eu-central-1b"]
+}
+
 variable "vpc_cidr_block" {
   description = "CIDR block for the VPC"
   type = string

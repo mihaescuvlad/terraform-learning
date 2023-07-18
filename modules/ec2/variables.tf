@@ -24,7 +24,7 @@ variable "iam_instance_profile" {
 variable "ami_id" {
   description = "The AMI to use"
   type = string
-  default = "ami-07ce6ac5ac8a0ee6f"
+  default = "ami-0d41b0174a816da7a"
 }
 
 variable "number_of_instances" {

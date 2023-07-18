@@ -17,7 +17,7 @@ variable "inf_env" {
 variable "vpc_cidr_block" {
   description = "CIDR block for the VPC"
   type = string
-  default = "10.0.0.0/24"
+  default = "10.0.0.0/16"
 }
 
 # EC2 Management #####################################################
@@ -25,6 +25,11 @@ variable "user_data_path" {
   description = "File path of the user data file"
   type = string
   default = "../../modules/ec2/user-data/ec2-nginx-webserver.sh"
+}
+
+variable "ami_key_pair_name" {
+  description = "AMI Key-Pair name"
+  type = string
 }
 
 # Instance Profile Management ########################################
@@ -44,8 +49,8 @@ variable "role_policies" {
 # Local Variables ####################################################
 
 locals {
-  cidr_subnets = cidrsubnets(var.vpc_cidr_block, 4, 4, 4)
-  private_subnets = slice(local.cidr_subnets, 0, 1) 
-  public_subnets = slice(local.cidr_subnets, 1, 2)
+  cidr_subnets = cidrsubnets(var.vpc_cidr_block, 4, 8, 8)
+  private_subnets = slice(local.cidr_subnets, 0, 2) 
+  public_subnets = slice(local.cidr_subnets, 2, 3)
 }
 

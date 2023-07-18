@@ -7,7 +7,7 @@ resource "aws_security_group" "secgr" {
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    cidr_blocks = var.private_subnets
+    cidr_blocks = var.sources
   }
 
   egress {
