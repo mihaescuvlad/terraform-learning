@@ -24,12 +24,18 @@ variable "vpc_cidr_block" {
 variable "user_data_path" {
   description = "File path of the user data file"
   type = string
-  default = "../../modules/ec2/user-data/ec2-nginx-webserver.sh"
+  default = "../../modules/ec2/user-data/ec2-nginx-webserver.tpl"
 }
 
 variable "ami_key_pair_name" {
   description = "AMI Key-Pair name"
   type = string
+}
+
+variable "application_name" {
+  description = "Name of the nginx application"
+  type = string
+  default = "webapp"
 }
 
 # Instance Profile Management ########################################
@@ -44,6 +50,11 @@ variable "role_policies" {
   description = "The list of policies that will be attached to the role"
   type = list(string)
   default = ["arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess", "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"] 
+}
+
+variable "s3_source" {
+  description = "Path to a file that will be read and uploaded in the S3 bucket"
+  type = string
 }
 
 # Local Variables ####################################################

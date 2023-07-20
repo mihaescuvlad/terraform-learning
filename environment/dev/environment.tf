@@ -7,6 +7,15 @@ module "vpc" {
   private_subnets = local.private_subnets
 }
 
+data "template_file" "nginx_setup" {
+  template = file(var.user_data_path)
+
+  vars = {
+    bucket_name = module.iam_resources.bucket_name
+    application_name = var.application_name
+  }
+}
+
 module "ec2" {
   source = "../../modules/ec2"
 
@@ -17,8 +26,11 @@ module "ec2" {
   #vpc_default_security_group_id = module.vpc.vpc_default_security_group_id
   other_security_groups = [module.security-group-tls.sec_gr_id]
 
-  user_data = file(var.user_data_path)
+  #user_data = file(var.user_data_path)
+  user_data = data.template_file.nginx_setup.rendered
   iam_instance_profile = module.iam_instance_profile.inst_pr_name
+
+  depends_on = [ module.vpc ]
 }
 
 module "iam_instance_profile" {
@@ -34,6 +46,7 @@ module "iam_resources" {
   source = "../../modules/instance_profiles/resources"
 
   inf_env = var.inf_env
+  s3_source = var.s3_source
 }
 
 module "security-group-tls" {
@@ -51,7 +64,9 @@ module "load-balancer" {
   target_id = module.ec2.ec2_id[0]
   vpc_id = module.vpc.vpc_id
   subnets = module.vpc.vpc_private_subnet_ids
-  security_groups = [module.security-group-tls.sec_gr_id] 
+  security_groups = [module.security-group-tls.sec_gr_id]
+
+  depends_on = [ module.vpc ]
 }
 
 module "bastion" {
