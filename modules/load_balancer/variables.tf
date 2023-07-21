@@ -37,13 +37,13 @@ variable "target_id" {
 variable "target_port" {
   description = "Port on which targets reveice traffic"
   type = number
-  default = 22
+  default = 80
 }
 
 variable "target_protocol" {
   description = "Protocol to use for routing traffic to the trgets"
   type = string
-  default = "TCP"
+  default = "HTTP"
 }
 
 variable "vpc_id" {

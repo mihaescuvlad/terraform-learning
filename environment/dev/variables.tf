@@ -1,9 +1,19 @@
 # AWS Management #####################################################
 
+variable "aws_access_key_id" {
+  description = "The AWS access key id"
+  type = string
+}
+
+variable "aws_secret_access_key" {
+  description = "The AWS secret key"
+  type = string
+}
+
+
 variable "aws_region" {
   description = "The AWS region"
   type = string
-  default = "eu-central-1"
 }
 
 # VPC Management #####################################################
@@ -54,6 +64,18 @@ variable "role_policies" {
 
 variable "s3_source" {
   description = "Path to a file that will be read and uploaded in the S3 bucket"
+  type = string
+}
+
+# RDS Management #####################################################
+
+variable "db_username" {
+  description = "Username for the DB Object"
+  type = string
+}
+
+variable "db_password" {
+  description = "Password for the DB Object"
   type = string
 }
 

@@ -14,3 +14,27 @@ variable "sources" {
   type = list(string)
 }
 
+variable "ingress_port" {
+  description = "Ingress port"
+  type = number
+  default = 22
+}
+
+variable "ingress_protocol" {
+  description = "Ingress protocol"
+  type = string
+  default = "tcp"
+}
+
+variable "engress_port" {
+  description = "Ingress port"
+  type = number
+  default = 0
+}
+
+variable "engress_protocol" {
+  description = "Ingress protocol"
+  type = string
+  default = "-1"
+}
+

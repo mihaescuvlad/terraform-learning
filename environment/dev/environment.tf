@@ -13,7 +13,12 @@ data "template_file" "nginx_setup" {
   vars = {
     bucket_name = module.iam_resources.bucket_name
     application_name = var.application_name
+    db_user = var.db_username
+    db_pass = var.db_password
+    db_url = module.database.db_url
   }
+
+  depends_on = [ module.database ]
 }
 
 module "ec2" {
@@ -52,7 +57,17 @@ module "iam_resources" {
 module "security-group-tls" {
   source = "../../modules/security_groups"
 
+  inf_env = "${var.inf_env}-0"
   vpc_id = module.vpc.vpc_id
+  sources = ["0.0.0.0/0"]
+}
+
+module "security-group-db" {
+  source = "../../modules/security_groups"
+
+  inf_env = "${var.inf_env}-1"
+  vpc_id = module.vpc.vpc_id
+  ingress_port = 3306
   sources = ["0.0.0.0/0"]
 }
 
@@ -65,6 +80,19 @@ module "load-balancer" {
   vpc_id = module.vpc.vpc_id
   subnets = module.vpc.vpc_private_subnet_ids
   security_groups = [module.security-group-tls.sec_gr_id]
+
+  depends_on = [ module.vpc ]
+}
+
+module "database" {
+  source = "../../modules/rds"
+
+  inf_env = var.inf_env
+  vpc_security_group_ids = [module.security-group-db.sec_gr_id]
+  subnet_ids = module.vpc.vpc_private_subnet_ids
+
+  username = var.db_username
+  password = var.db_password
 
   depends_on = [ module.vpc ]
 }
