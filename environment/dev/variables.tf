@@ -14,6 +14,7 @@ variable "aws_secret_access_key" {
 variable "aws_region" {
   description = "The AWS region"
   type = string
+  default = "eu-central-1"
 }
 
 # VPC Management #####################################################
