@@ -10,7 +10,6 @@ variable "aws_secret_access_key" {
   type = string
 }
 
-
 variable "aws_region" {
   description = "The AWS region"
   type = string
@@ -78,6 +77,14 @@ variable "db_username" {
 variable "db_password" {
   description = "Password for the DB Object"
   type = string
+}
+
+# EKS Cluster ########################################################
+
+variable "eks_role_policy_path" {
+  description = "File path of the role policy file"
+  type = string
+  default = "../../modules/eks/role-policy/role-policy.json"
 }
 
 # Local Variables ####################################################

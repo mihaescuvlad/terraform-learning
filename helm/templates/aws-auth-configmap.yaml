@@ -1,0 +1,29 @@
+# templates/aws-auth-configmap.yaml
+
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+  {{- range .Values.roleMappings }}
+    - groups: 
+      {{- range .groups }}
+        - {{ . | quote }}
+      {{- end}}
+    rolearn: {{ .roleArn | quote }}
+    username: {{ .username | quote }}
+  {{- end}}
+  mapUsers: |
+  {{- range .Values.userMappings }}
+    - userarm: {{ .userArn | quote }}
+      username: {{ .username | quote }}
+      groups:
+      {{- range .groups }}
+        - {{ . | quote}}
+      {{- end }}
+  {{- end}}
+---
+

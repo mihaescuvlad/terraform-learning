@@ -108,3 +108,14 @@ module "bastion" {
   other_security_groups = [module.security-group-tls.sec_gr_id]
 }
 
+module "eks" {
+  source = "../../modules/eks"
+
+  inf_env = "${var.inf_env}"
+
+  cluster_subnet_ids = module.vpc.vpc_private_subnet_ids
+  nodegr_subnet_ids = module.vpc.vpc_private_subnet_ids
+  assume_role_policy = file(var.eks_role_policy_path)
+
+  depends_on = [ module.vpc ]
+}

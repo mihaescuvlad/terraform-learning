@@ -31,3 +31,6 @@ terraform.rc
 
 # SSH Keys
 *.pem
+
+# Helm Values
+*/values.yaml
