@@ -1,0 +1,4 @@
+apiVersion: v1
+name: aws-eks-chart
+description: A helm chart to manage user and role mappings for the generated EKS' instance aws-auth
+version: 1.0.0
